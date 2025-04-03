@@ -3,5 +3,5 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Print("Please make Docker work")
+	fmt.Println("Please make Docker work")
 }
