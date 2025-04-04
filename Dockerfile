@@ -7,7 +7,13 @@
 
  ENV PATH="$PATH:/usr/local/go/bin"
  COPY *.go /service
+ COPY --chown=755 bin/entrypoint.sh /service
  COPY src/GoAPI/main.go /service
+ 
+ RUN chmod +x bin/entrypoint.sh
+ RUN apt update -yq
+ RUN apt install -y postgresql-client
+
  RUN cd /service && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /http-service .
  
  CMD /http-service
