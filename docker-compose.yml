@@ -4,6 +4,7 @@ version: "3"
  
 services:
   http:
+    platform: linux/arm64
     image: service_test
     environment:
       DATABASE_URL: "postgres://tester:testing@db:5432/music?sslmode=disable"
@@ -15,7 +16,8 @@ services:
     entrypoint:  "bin/entrypoint.sh"
 
   db:
-    image: postgres:latest 
+    platform: linux/arm64
+    image: arm64v8/postgres:latest 
     ports: 
       - "5432:5432"
     environment: 

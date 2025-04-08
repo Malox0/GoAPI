@@ -16,7 +16,7 @@ type health struct {
 
 func main() {
 	fmt.Println("Please make Docker work")
-
+	fmt.Println("Pls speed up docker")
 	r := mux.NewRouter()
 
 	r.HandleFunc(
