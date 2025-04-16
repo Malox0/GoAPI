@@ -4,7 +4,7 @@ FROM golang:latest as build
 WORKDIR /service
 ADD . /service
 
-COPY src/GoAPI/main.go /service
+COPY main.go /service
 RUN chmod +x bin/entrypoint.sh
 RUN apt update -yq
 RUN apt install -y postgresql-client

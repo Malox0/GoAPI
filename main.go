@@ -12,6 +12,9 @@ import (
 	"github.com/golang-migrate/migrate"
 	"github.com/golang-migrate/migrate/database/postgres"
 	"github.com/gorilla/mux"
+
+	_ "github.com/golang-migrate/migrate/source/file"
+	_ "github.com/lib/pq"
 )
 
 type health struct {
@@ -24,22 +27,22 @@ func main() {
 	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 
 	if err != nil {
-		log.Fatalf("Error wiht DB connection: #{err.Error()}")
+		log.Fatalf("Error wiht DB connection: %v", err.Error())
 	}
 
 	driver, err := postgres.WithInstance(db, &postgres.Config{})
 	if err != nil {
-		log.Fatalf("Error with Driver #{err.Error()}")
+		log.Fatalf("Error with Driver %v", err.Error())
 	}
 
 	migrator, err := migrate.NewWithDatabaseInstance(
-		"file://migrations",
+		"file://migrations/",
 		"postgres",
 		driver,
 	)
 
 	if err != nil {
-		log.Fatalf("Error with migration #{err.Error()}")
+		log.Fatalf("Error with migration %v", err.Error())
 	}
 
 	migrator.Steps(2)
