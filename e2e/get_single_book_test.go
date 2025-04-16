@@ -24,5 +24,5 @@ func (s *GetSingleBookSuite) TestGetBookThatDoesNotExist() {
 	body, _ := io.ReadAll(r.Body)
 
 	s.Equal(http.StatusNotFound, r.StatusCode)
-	s.JSONEq(`{"code" : "001", "msg" : "No book with ISBN 1234567890"}`, string(body))
+	s.JSONEq(`{"Code" : "001", "Msg" : "No book with ISBN 123456789"}`, string(body))
 }
