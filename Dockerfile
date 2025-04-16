@@ -4,6 +4,7 @@ FROM golang:latest as build
 WORKDIR /service
 ADD . /service
 
+ADD migrations /service/migrations
 COPY main.go /service
 RUN chmod +x bin/entrypoint.sh
 RUN apt update -yq

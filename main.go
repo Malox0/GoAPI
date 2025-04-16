@@ -22,6 +22,11 @@ type health struct {
 	Messages []string `json:"messages"`
 }
 
+type jsonError struct {
+	Code string `json: code`
+	Msg  string `json: message`
+}
+
 func main() {
 
 	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
@@ -63,6 +68,24 @@ func main() {
 
 			w.Write(b)
 			w.WriteHeader(http.StatusOK)
+		})
+
+	r.HandleFunc(
+		"/book/{isbn}",
+		func(w http.ResponseWriter, r *http.Request) {
+
+			v := mux.Vars(r)
+
+			e := jsonError{
+				Code: "001",
+				Msg:  fmt.Sprintf("No book with ISBN %v", v["isbn"]),
+			}
+
+			b, _ := json.Marshal(e)
+
+			w.WriteHeader(http.StatusNotFound)
+			w.Write(b)
+
 		})
 
 	s := http.Server{
