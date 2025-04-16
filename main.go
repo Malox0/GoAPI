@@ -1,11 +1,16 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"time"
 
+	"github.com/golang-migrate/migrate"
+	"github.com/golang-migrate/migrate/database/postgres"
 	"github.com/gorilla/mux"
 )
 
@@ -15,6 +20,30 @@ type health struct {
 }
 
 func main() {
+
+	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+
+	if err != nil {
+		log.Fatalf("Error wiht DB connection: #{err.Error()}")
+	}
+
+	driver, err := postgres.WithInstance(db, &postgres.Config{})
+	if err != nil {
+		log.Fatalf("Error with Driver #{err.Error()}")
+	}
+
+	migrator, err := migrate.NewWithDatabaseInstance(
+		"file://migrations",
+		"postgres",
+		driver,
+	)
+
+	if err != nil {
+		log.Fatalf("Error with migration #{err.Error()}")
+	}
+
+	migrator.Steps(2)
+
 	fmt.Println("Please make Docker work")
 	fmt.Println("Pls speed up docker")
 	r := mux.NewRouter()
